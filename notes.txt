@@ -1,0 +1,4 @@
+jquery slim does not have $.post
+
+pk of django user is an int
+default str representation of django user is the username

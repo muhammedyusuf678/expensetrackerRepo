@@ -1,0 +1,87 @@
+{% extends 'base.html'%}
+{% block content %}
+<h1 class="text-center">{{user.first_name}}'s Expenses</h1>
+<div class="text-center">
+    <form action="{% url 'home' %}" action="GET" id="dateForm">
+      From: <input type="month" id="fromDate" name="fromDate" class="form-input">
+      To: <input type="month" id="toDate" name="toDate" class="form-input">
+      
+      <br>
+      Category:
+      <select class="form-control" name="category" id="category">
+      <option value="-1">All</option>
+      {% for category in userCategories.all %}
+          <option value="{{category.id}}">{{category.value}}</option>
+      {% endfor %}
+      {% for category in defaultCategories.all %}
+          <option value="{{category.id}}">{{category.value}}</option>
+      {% endfor %}
+      </select>
+
+    </form>
+</div>
+<!-- {% if expenses %} -->
+  {% for expense in expenses.all %}
+      <h3>{{expense.title}} (Category: {{expense.category.value}})</h3>
+      <h5>{{expense.amount}} {{expense.currency}}</h5>
+      <p>{{expense.body}}</p>
+      <p>{{expense.date_time}}</p>
+      <p>{{expense.date_formatted}}</p>
+      <p>{{expense.month}}</p>
+      <a href="{% url 'editExpense' expense.id %}" class="btn btn-outline-primary">Edit</a>
+      <a href="{% url 'deleteExpense' expense.id %}" class="btn btn-outline-danger">Delete</a>
+  {% endfor %}
+<!-- {% endif %} -->
+
+
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"
+  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+<script type="text/javascript">
+    function getCurrentYearAndMonth (monthOffset =0){
+      var currentDate = new Date()
+      var monthString;
+      if (currentDate.getMonth() < 10) {
+        monthString = "0" + String(currentDate.getMonth()+1 +monthOffset)
+      }
+      else monthString = String(currentDate.getMonth()+1+monthOffset)
+      return currentDate.getFullYear()+"-"+monthString
+    }
+    $(document).ready(function () {
+      $("#fromDate").val('{{fromDate}}')
+      $("#toDate").val('{{toDate}}')
+      console.log('{{toDate}}')
+      console.log('selectedCategoryPK: {{selectedCategoryPK}}')
+      $("select option[value='{{selectedCategoryPK}}']").attr("selected","selected");
+    });
+
+    $("#fromDate").change(function (e) {
+      e.preventDefault();
+      console.log("fromDate: "+$("#fromDate").val())
+      if ($("#fromDate").val() == ''){ //date input cleared
+        $("#fromDate").val(getCurrentYearAndMonth())
+      }
+      if ($("#toDate").val() == ''){ //date input cleared
+        $("#toDate").val(getCurrentYearAndMonth(1))
+      }
+      $("#dateForm").submit()
+    });
+    $("#toDate").change(function (e) {
+      e.preventDefault();
+      console.log("toDate: "+$("#toDate").val())
+      if ($("#toDate").val() == ''){ //date input cleared
+        $("#toDate").val(getCurrentYearAndMonth(1))
+      }
+      $("#dateForm").submit()
+    });
+
+    $("#category").change(function (e) {
+      e.preventDefault();
+      $("#dateForm").submit()
+    });
+
+  </script>
+
+{% endblock %}
+
+

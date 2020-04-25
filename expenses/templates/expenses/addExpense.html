@@ -1,0 +1,67 @@
+{% extends 'base.html'%}
+{% block content %}
+
+{% if error %}
+{{ error }}
+<br>
+<br>
+{% endif %}
+
+<h1>Add an Expense!</h1>
+<form action="{% url 'addExpense' %}" method="POST">
+    {% csrf_token %}
+
+    <a href="{% url 'addCategory' %}" class="btn btn-outline-info">Add new category</a>
+    <br>
+    Category:
+    <select class="form-control" name="category">
+    {% for category in userCategories.all %}
+        <option value="{{category.id}}">{{category.value}}</option>
+    {% endfor %}
+    {% for category in defaultCategories.all %}
+        <option value="{{category.id}}">{{category.value}}</option>
+    {% endfor %}
+    </select>
+
+    Title:
+    <br>
+    <input type="text" name="title"/>
+    <br>
+
+    Amount:
+    <br>
+    <input type="number" name="amount"/>
+    <br>
+
+    Currency:
+    <br>
+    <input type="text" name="currency"/>
+    <br>
+
+
+    Payment Method:
+    <br>
+    <input type="text" name="payment_method"/>
+    <br>
+
+    Body:
+    <br>
+    <input type="textbox" name="body"/>
+    <br>
+
+    
+
+    Date:
+    <br>
+    <input type="date" name="date"/>
+    <br>
+
+    Time:
+    <br>
+    <input type="time" name="time"/>
+    <br>
+
+    <input type="submit" value="Submit" class="btn btn-primary">
+</form>
+
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends 'base.html'%}
+{% block content %}
+
+{% if error %}
+{{ error }}
+<br>
+<br>
+{% endif %}
+
+<h1>Add a new Category!</h1>
+<form action="{% url 'addCategory' %}" method="POST">
+    {% csrf_token %}
+    Category:
+    <br>
+    <input type="text" name="value"/>
+    <br>
+
+    <input type="submit" value="Submit" class="btn btn-primary">
+</form>
+
+{% endblock %}

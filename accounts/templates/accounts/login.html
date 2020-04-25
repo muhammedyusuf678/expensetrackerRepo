@@ -1,0 +1,29 @@
+{% extends 'base.html'%}
+{% block content %}
+
+{% if error %}
+{{ error }}
+<br>
+<br>
+{% endif %}
+
+<h1>Login!</h1>
+<form action="{% url 'login' %}" method="POST">
+    <!-- whenever using forms specify the following token to protect website from attacks -->
+    <!-- cross site request forgery -->
+    {% csrf_token %}
+    Email:
+    <br>
+    <input type="text" name="email"/>
+    <br>
+    Password:
+    <br>
+    <input type="password" name="password"/>
+    <br>
+    <br>
+    <input type="submit" value="Login" class="btn btn-primary">
+</form>
+
+<p>Don't have an account? <a href="{% url 'signup' %}">Sign up!</a></p>
+
+{% endblock %}

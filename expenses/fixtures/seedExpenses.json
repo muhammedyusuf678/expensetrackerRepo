@@ -1,0 +1,16 @@
+[
+    {
+        "model": "expenses.expense",
+        "pk": 1,
+        "fields": {
+            "title":"Hardees Dinner",
+            "body":"Good Decision",
+            "expense_date": "2020-04-19 20:00",
+            "amount": 20,
+            "currency": "AED",
+            "category":"Food",
+            "payment_method":"Credit Card",
+            "user": 3
+        }
+    }
+]

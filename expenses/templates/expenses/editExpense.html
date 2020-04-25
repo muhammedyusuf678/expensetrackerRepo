@@ -1,0 +1,73 @@
+{% extends 'base.html'%}
+{% block content %}
+
+{% if error %}
+{{ error }}
+<br>
+<br>
+{% endif %}
+
+<h1>Edit Expense</h1>
+<form action="{% url 'editExpense' expense.id %}" method="POST">
+    {% csrf_token %}
+
+    Category:
+    <select class="form-control" name="category">
+    {% for category in userCategories.all %}
+        {% if category.id == expense.category.id %}
+            <option value="{{category.id}}" selected>{{category.value}}</option>
+        {% else %}
+            <option value="{{category.id}}">{{category.value}}</option>
+        {% endif %}
+    {% endfor %}
+    {% for category in defaultCategories.all %}
+        {% if category.id == expense.category.id %}
+            <option value="{{category.id}}" selected>{{category.value}}</option>
+        {% else %}
+            <option value="{{category.id}}">{{category.value}}</option>
+        {% endif %}
+    {% endfor %}
+    </select>
+    <br>
+
+    Title:
+    <br>
+    <input type="text" name="title" value="{{ expense.title }}"/>
+    <br>
+
+    Amount:
+    <br>
+    <input type="number" name="amount" value="{{ expense.amount }}"/>
+    <br>
+
+    Currency:
+    <br>
+    <input type="text" name="currency" value="{{ expense.currency }}"/>
+    <br>
+
+    Payment Method:
+    <br>
+    <input type="text" name="payment_method" value="{{ expense.payment_method }}"/>
+    <br>
+
+    Body:
+    <br>
+    <input type="textbox" name="body" value="{{ expense.body }}"/>
+    <br>
+
+    
+
+    Date:
+    <br>
+    <input type="date" name="date" value="{{date_val}}"/>
+    <br>
+
+    Time:
+    <br>
+    <input type="time" name="time" value="{{time_val}}"/>
+    <br>
+
+    <input type="submit" value="Submit" class="btn btn-primary">
+</form>
+
+{% endblock %}
