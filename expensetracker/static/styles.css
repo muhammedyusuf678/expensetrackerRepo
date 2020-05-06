@@ -1,0 +1,38 @@
+input[type=search]::-webkit-search-cancel-button {
+    -webkit-appearance: searchfield-cancel-button;
+}
+
+body{
+    /* background-color: aquamarine; */
+}
+
+.bd-highlight {
+    background-color: rgba(86,61,124,.15);
+    border: 1px solid rgba(86,61,124,.15);
+}
+
+.card:hover{
+    box-shadow: 0 1rem 3rem rgba(0,0,0,.175)!important;
+}
+
+tr .tableBtn {
+    width: 10%;
+    text-align:right;
+}
+
+/* card flexbox container */
+.cardFlexContainer {
+    margin: 10px;
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    flex-direction: row;
+}
+
+.card-deck {
+    margin: 10px;
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    flex-direction: row;
+}

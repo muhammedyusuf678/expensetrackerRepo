@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'stats.apps.StatsConfig',
+    'payment_methods.apps.PaymentMethodsConfig',
     'categories.apps.CategoriesConfig',
     'expenses.apps.ExpensesConfig',
     'accounts.apps.AccountsConfig',

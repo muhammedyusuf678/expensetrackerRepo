@@ -1,7 +1,7 @@
 {% extends 'base.html'%}
 {% block content %}
 
-<h1>All Categories</h1>
+<h1 class="text-center">All Categories</h1>
 <table class="table table-hover mt-4">
     <thead class="bg-info text-white">
         <tr>
@@ -14,10 +14,10 @@
     <tbody>
         {% for category in categories.all %}
         <tr class="accessRow">
-            <th scope="row"> {{i}} </th>
+            <th scope="row"> {{forloop.counter}} </th>
             <td>{{category.value}}</td>
-            <td><a href="{% url 'editCategory' category.id %}" class="btn btn-outline-primary">Edit</a></td>
-            <td><a href="{% url 'deleteCategory' category.id %}" class="btn btn-outline-danger">Delete</a></td>
+            <td class="tableBtn"><a href="{% url 'editCategory' category.id %}" class="btn btn-outline-primary">Edit</a></td>
+            <td class="tableBtn"><a href="{% url 'deleteCategory' category.id %}" class="btn btn-outline-danger">Delete</a></td>
         </tr>
         {% endfor %}
     </tbody>

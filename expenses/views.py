@@ -39,22 +39,27 @@ def home (request):
             print(categoryFilter)
             #add filter to query set produced
             allExpensesForUser = allExpensesForUser.filter(category = categoryFilter).order_by('-date_time')
-        
+
+    searchInput = ''
+    if 'searchInput' in request.GET:
+        searchInput = request.GET['searchInput']
+        allExpensesForUser = allExpensesForUser.filter(title__contains = searchInput).order_by('-date_time')
+
     defaultCategories = Category.objects.filter(user=1) #set by admin user
     allCategoriesForUser = Category.objects.filter(user=request.user)
 
-    return render(request, 'expenses/home.html',{'expenses':allExpensesForUser,'fromDate':fromYearAndMonthString,'toDate':toYearAndMonthString, 'userCategories':allCategoriesForUser,'defaultCategories':defaultCategories, 'selectedCategoryPK':selectedCategoryPK})
+    return render(request, 'expenses/home.html',{'expenses':allExpensesForUser,'fromDate':fromYearAndMonthString,'toDate':toYearAndMonthString, 'userCategories':allCategoriesForUser,'defaultCategories':defaultCategories, 'selectedCategoryPK':selectedCategoryPK,'searchInput':searchInput})
 
 @login_required(login_url="/accounts/login")
 def addExpense(request):
     print ("----> in addExpense")
     if request.method == "POST":
         #check all required fields
-        if request.POST["title"] and request.POST["amount"] and request.POST["currency"] and request.POST["payment_method"] and request.POST["body"] and request.POST["category"]:
+        if request.POST["title"] and request.POST["amount"] and request.POST["payment_method"] and request.POST["body"] and request.POST["category"]:
             newExpense = Expense()
             newExpense.title = request.POST["title"]
             newExpense.amount = request.POST["amount"]
-            newExpense.currency = request.POST["currency"]
+            newExpense.currency = "AED"
             newExpense.payment_method = request.POST["payment_method"]
             newExpense.body = request.POST["body"]
             selectedCategoryPK = int(request.POST["category"])
@@ -85,10 +90,10 @@ def editExpense (request, expense_id):
     expense = Expense.objects.get(pk=expense_id)
 
     if request.method == "POST":
-        if request.POST["title"] and request.POST["amount"] and request.POST["currency"] and request.POST["payment_method"] and request.POST["body"] and request.POST["category"]:
+        if request.POST["title"] and request.POST["amount"] and request.POST["payment_method"] and request.POST["body"] and request.POST["category"]:
             expense.title = request.POST["title"]
             expense.amount = request.POST["amount"]
-            expense.currency = request.POST["currency"]
+            expense.currency = "AED"
             expense.payment_method = request.POST["payment_method"]
             expense.body = request.POST["body"]
 

@@ -2,3 +2,17 @@ jquery slim does not have $.post
 
 pk of django user is an int
 default str representation of django user is the username
+
+location of expense
+good decision, bad decision
+
+add Income
+balance sheet
+add pictures
+
+
+add payment method CRUD --- MUST DO
+make MEMO expense fields optional --- MEH -- can add other optional fields like location
+add good decision/bad decision bool -- MEH
+add currency to create user --- MEH
+

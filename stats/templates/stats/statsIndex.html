@@ -4,17 +4,21 @@
 <div class="text-center">
   Select Year:
   <select id="yearSelect">
-    {% for year in years %}
+    <option value='{{years.0}}' selected>{{years.0}}</option>
+    {% for year in years|slice:"1:" %}
     <option value="{{year}}">{{year}}</option>
     {% endfor %}
   </select>
 </div>
-<div id="barchart" style="width: 900px; height: 300px;"></div>
+<div id="barchart" class="d-block" style="width: 1250px; height: 650px;"></div>
 
 <div class="text-center">
   Select Month: <input type="month" id="yearAndMonthInput" class="form-input">
 </div>
 <div id="piechart" style="width: 900px; height: 500px;"></div>
+<div id="piechart2" style="width: 900px; height: 500px;"></div>
+
+
 
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"
@@ -30,68 +34,74 @@
     else monthString = String(currentDate.getMonth() + 1)
     $("#yearAndMonthInput").val(currentDate.getFullYear() + "-" + monthString)
     google.charts.load('current', { 'packages': ['corechart'] });
-    google.charts.setOnLoadCallback(getDataAndDrawChart);
+    google.charts.setOnLoadCallback(onLoadGoogleCharts);
   });
+
+  function onLoadGoogleCharts(){
+    getDataAndDrawColumnChart()
+    getDataAndDrawPieChart()
+  }
 
   $("#yearSelect").change(function (e) {
     e.preventDefault();
     console.log($("#yearSelect").val())
+    getDataAndDrawColumnChart() 
+  });
+
+  function getDataAndDrawColumnChart(){
     $.ajax({
       url: 'monthAmountStat',
       action: 'get',
       data: { year: $("#yearSelect").val() },
       success: function (response) {
-        chartDataArray = Object.entries(response)
-        chartDataArray.unshift(['Month', 'Amount Spent'])
-        console.log(chartDataArray)
-        // drawBarChart(chartDataArray, 'barchart')
-        drawColumnChart(chartDataArray, 'barchart')
-
+        console.log("response from monthAmountStat");
+        console.log(response)
+        if ($.isEmptyObject(response)){
+           $("#barchart").text("No expenses in this year")
+        }
+        else {
+          chartDataArray = Object.entries(response)
+          chartDataArray.unshift(['Month', 'Amount Spent'])
+          console.log(chartDataArray)
+          // drawBarChart(chartDataArray, 'barchart')
+          drawColumnChart(chartDataArray, 'barchart', "Amount Spent Per Month in "+$("#yearSelect").val())
+        }
       }
     })
-  });
-
-  function drawBarChart(chartDataArray, divID) {
-    var data = google.visualization.arrayToDataTable(chartDataArray);
-    var options = {
-      title: "Amount Spent Per Month",
-      width: 600,
-      height: 400,
-      bar: { groupWidth: "95%" },
-      legend: { position: "none" },
-    };
-    var chart = new google.visualization.BarChart(document.getElementById(divID));
-    chart.draw(data, options);
   }
 
-  function drawColumnChart(chartDataArray, divID) {
+  function drawColumnChart(chartDataArray, divID, title) {
     var data = google.visualization.arrayToDataTable(chartDataArray);
-    var view = new google.visualization.DataView(data);
-    view.setColumns([0, 1,
-      {
-        calc: "stringify",
-        sourceColumn: 1,
-        type: "string",
-        role: "annotation"
-      },
-      2]);
+    console.log("in drawColumnChart")
+    console.log(chartDataArray)
     var options = {
-      title: "Amount Spent Per Month",
-      width: 600,
-      height: 400,
+      title: title,
+      width: 1250,
+      height: 600,
       bar: { groupWidth: "95%" },
       legend: { position: "none" },
     };
     var chart = new google.visualization.ColumnChart(document.getElementById(divID));
-    chart.draw(view, options);
+    chart.draw(data, options);
   }
 
   $("#yearAndMonthInput").change(function (e) {
     e.preventDefault();
     console.log($("#yearAndMonthInput").val())
-    getDataAndDrawChart()
+    getDataAndDrawPieChart()
   });
-  function getDataAndDrawChart() {
+
+  function getWordMonthAndYear (monthInput) {
+    var splitted = monthInput.split("-") 
+    var month = parseInt(splitted[1])
+    var yearString = splitted[0]
+    var months = ["Jan", "Feb", "March", "April", "May", "June", "July", 
+"August", "September", "October", "November", "December"];
+    return months[month-1]+" "+yearString
+  }
+
+  function getDataAndDrawPieChart() {
+    var wordMonthAndYear = getWordMonthAndYear($("#yearAndMonthInput").val())
     $.ajax({
       url: 'categoryAmountStat',
       action: 'get',
@@ -100,21 +110,45 @@
         chartDataArray = Object.entries(response)
         chartDataArray.unshift(['Category', 'Amount Spent'])
         console.log(chartDataArray)
-        drawPieChart(chartDataArray, 'piechart')
+        
+        drawPieChart(chartDataArray, 'piechart', 'Amount Spent in Different Categories in '+wordMonthAndYear)
+      }
+    })
+    $.ajax({
+      url: 'paymentMethodAmountStat',
+      action: 'get',
+      data: { yearAndMonth: $("#yearAndMonthInput").val() },
+      success: function (response) {
+        chartDataArray = Object.entries(response)
+        chartDataArray.unshift(['Payment Method', 'Amount Spent'])
+        console.log(chartDataArray)
+        drawPieChart(chartDataArray, 'piechart2', 'Amount Spent in Different Payment Methods in '+wordMonthAndYear)
       }
     })
   }
-  function drawPieChart(chartDataArray, divID) {
+  function drawPieChart(chartDataArray, divID, title) {
     var data = google.visualization.arrayToDataTable(chartDataArray);
     var options = {
-      title: 'Amount Spent in Different Categories'
+      title: title
     };
     var chart = new google.visualization.PieChart(document.getElementById(divID));
     chart.draw(data, options);
   }
 
-
-
 </script>
 
 {% endblock %}
+
+<!-- function drawBarChart(chartDataArray, divID) {
+  var data = google.visualization.arrayToDataTable(chartDataArray);
+  var options = {
+    title: "Amount Spent Per Month",
+    width: 600,
+    height: 400,
+    bar: { groupWidth: "95%" },
+    // chartArea: {'width': '80%', 'height': '80%'},
+    legend: { position: "none" },
+  };
+  var chart = new google.visualization.BarChart(document.getElementById(divID));
+  chart.draw(data, options);
+} -->

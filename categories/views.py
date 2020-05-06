@@ -11,6 +11,7 @@ from datetime import datetime
 @login_required(login_url="/accounts/login")
 def allCategories (request):
     allCategoriesForUser = Category.objects.filter(user=request.user)
+    numOfCategories = allCategoriesForUser.count()
     return render(request,"categories/allCategories.html",{'categories':allCategoriesForUser})
 
 @login_required(login_url="/accounts/login")
