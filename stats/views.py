@@ -66,10 +66,10 @@ def paymentMethodAmountStat(request):
     print ("all expenses in 1 month for payment method")
     for expense in allExpensesForUser:
         print(expense.title,"-",expense.payment_method)
-        if expense.payment_method not in paymentMethodAmountDict:
-            paymentMethodAmountDict[expense.payment_method] = expense.amount
+        if expense.paymentMethodValue not in paymentMethodAmountDict:
+            paymentMethodAmountDict[expense.paymentMethodValue] = expense.amount
         else: 
-            paymentMethodAmountDict[expense.payment_method] += expense.amount
+            paymentMethodAmountDict[expense.paymentMethodValue] += expense.amount
 
     for item in paymentMethodAmountDict.items():
         print (item)

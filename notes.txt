@@ -16,3 +16,4 @@ make MEMO expense fields optional --- MEH -- can add other optional fields like 
 add good decision/bad decision bool -- MEH
 add currency to create user --- MEH
 
+its very customizable and lets the user add as much or as little as they want in terms of categories and payment methods and this is reflected in the stats too.

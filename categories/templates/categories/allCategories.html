@@ -1,7 +1,7 @@
 {% extends 'base.html'%}
 {% block content %}
 
-<h1 class="text-center">All Categories</h1>
+<h1 class="text-center">{{user.first_name}}'s Categories</h1>
 <table class="table table-hover mt-4">
     <thead class="bg-info text-white">
         <tr>
@@ -18,6 +18,28 @@
             <td>{{category.value}}</td>
             <td class="tableBtn"><a href="{% url 'editCategory' category.id %}" class="btn btn-outline-primary">Edit</a></td>
             <td class="tableBtn"><a href="{% url 'deleteCategory' category.id %}" class="btn btn-outline-danger">Delete</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h1 class="text-center">Default Categories</h1>
+<table class="table table-hover mt-4">
+    <thead class="bg-info text-white">
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Category</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for category in defaultCategories.all %}
+        <tr class="accessRow">
+            <th scope="row"> {{forloop.counter}} </th>
+            <td>{{category.value}}</td>
+            <td></td>
+            <td></td>
         </tr>
         {% endfor %}
     </tbody>

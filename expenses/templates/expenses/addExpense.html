@@ -11,46 +11,55 @@
 <form action="{% url 'addExpense' %}" method="POST">
     {% csrf_token %}
 
-    <a href="{% url 'addCategory' %}" class="btn btn-outline-info">Add new category</a>
+    <!-- <a href="{% url 'addCategory' %}" class="btn btn-outline-info">Add new category</a> -->
     <br>
     Category:
     <select class="form-control" name="category" required>
-    {% for category in userCategories.all %}
+        {% for category in userCategories.all %}
         <option value="{{category.id}}">{{category.value}}</option>
-    {% endfor %}
-    {% for category in defaultCategories.all %}
+        {% endfor %}
+        {% for category in defaultCategories.all %}
         <option value="{{category.id}}">{{category.value}}</option>
-    {% endfor %}
+        {% endfor %}
     </select>
+    <br>
+    <!-- <a href="{% url 'addPaymentMethod' %}" class="btn btn-outline-info">Add new payment method</a> -->
+    Payment Method:
+    <select class="form-control" name="payment_method" required>
+        {% for paymentMethod in userPaymentMethods.all %}
+        <option value="{{paymentMethod.id}}">{{paymentMethod.value}}</option>
+        {% endfor %}
+        {% for paymentMethod in defaultPaymentMethods.all %}
+        <option value="{{paymentMethod.id}}">{{paymentMethod.value}}</option>
+        {% endfor %}
+    </select>
+
 
     Title:
     <br>
-    <input type="text" name="title" required/>
+    <input type="text" name="title" required />
     <br>
 
     Amount:
     <br>
-    <input type="number" name="amount" required/>
+    <input type="number" name="amount" required />
     <br>
 
-    Payment Method:
-    <br>
-    <input type="text" name="payment_method" required/>
-    <br>
+
 
     Memo:
     <br>
-    <input type="textbox" name="body" required/>
+    <input type="textbox" name="body" required />
     <br>
 
     Date:
     <br>
-    <input type="date" name="date" required/>
+    <input type="date" name="date" required />
     <br>
 
     Time:
     <br>
-    <input type="time" name="time" required/>
+    <input type="time" name="time" required />
     <br>
 
     <input type="submit" value="Submit" class="btn btn-primary">

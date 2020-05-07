@@ -20,8 +20,19 @@
       {% endfor %}
     </select>
 
+    Payment Method:
+    <select class="form-control w-25 d-inline" name="payment_method" id="payment_method">
+      <option value="-1">All</option>
+      {% for paymentMethod in userPaymentMethods.all %}
+      <option value="{{paymentMethod.id}}">{{paymentMethod.value}}</option>
+      {% endfor %}
+      {% for paymentMethod in defaultPaymentMethods.all %}
+      <option value="{{paymentMethod.id}}">{{paymentMethod.value}}</option>
+      {% endfor %}
+    </select>
+
     <input type="search" id="searchInput" name="searchInput" class="mt-2 form-control w-25 d-inline"
-      placeholder="Search By Title" value='{{searchInput}}'>
+      placeholder="Search By Title or Memo" value='{{searchInput}}'>
 
   </form>
 </div>
@@ -36,8 +47,9 @@
   <div class="card m-4 d-inline-block" style="width: 25%;">
     <div class="card-body">
       <h5 class="card-title">{{expense.title}}</h5>
-      <h6 class="card-subtitle mb-2 text-muted">{{expense.category.value}}</h6>
+      <b><h6 class="card-subtitle mb-2 text-muted">{{expense.category.value}}</h6></b>
       <h4 class="text-danger">{{expense.amount}} {{expense.currency}}</h4>
+      <h6 class="text-info">{{expense.payment_method.value}}</h6>
       <p class="card-text">{{expense.body}}</p>
       <a href="{% url 'editExpense' expense.id %}" class="btn btn-outline-primary">Edit</a>
       <a href="{% url 'deleteExpense' expense.id %}" class="ml-2 btn btn-outline-danger">Delete</a>
@@ -75,7 +87,8 @@
     $("#toDate").val('{{toDate}}')
     console.log('{{toDate}}')
     console.log('selectedCategoryPK: {{selectedCategoryPK}}')
-    $("select option[value='{{selectedCategoryPK}}']").attr("selected", "selected");
+    $("select#category option[value='{{selectedCategoryPK}}']").attr("selected", "selected");
+    $("select#payment_method option[value='{{selectedPaymentMethodPK}}']").attr("selected", "selected");
   });
 
   $("#fromDate").change(function (e) {
@@ -102,6 +115,12 @@
     e.preventDefault();
     $("#dateForm").submit()
   });
+
+  $("#payment_method").change(function (e) {
+    e.preventDefault();
+    $("#dateForm").submit()
+  });
+
   var debounce = null
   $("#searchInput").keyup(function (e) {
     e.preventDefault();

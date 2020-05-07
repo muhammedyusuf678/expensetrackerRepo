@@ -1,0 +1,21 @@
+{% extends 'base.html'%}
+{% block content %}
+
+{% if error %}
+{{ error }}
+<br>
+<br>
+{% endif %}
+
+<h1>Edit Payment Method!</h1>
+<form action="{% url 'editPaymentMethod' paymentMethod.id %}" method="POST">
+    {% csrf_token %}
+    Payment Method Information:
+    <br>
+    <input type="text" name="value" value="{{paymentMethod.value}}" required/>
+    <br>
+
+    <input type="submit" value="Submit" class="btn btn-primary">
+</form>
+
+{% endblock %}

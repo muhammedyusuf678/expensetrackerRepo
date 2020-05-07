@@ -13,7 +13,6 @@ urlpatterns = [
     path('expenses/',include('expenses.urls')),
     path('categories/',include('categories.urls')),
     path('stats/',include('stats.urls')),
-
-
+    path('payment_methods/',include('payment_methods.urls')),
 
 ]+static(settings.MEDIA_URL,document_root = settings.MEDIA_ROOT)

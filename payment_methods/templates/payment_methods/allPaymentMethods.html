@@ -1,1 +1,49 @@
-<h1>Payment Methods page</h1>
+{% extends 'base.html'%}
+{% block content %}
+
+<h1 class="text-center">{{user.first_name}}'s Payment Methods</h1>
+<table class="table table-hover mt-4">
+    <thead class="bg-info text-white">
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Payment Method</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for paymentMethod in paymentMethods.all %}
+        <tr class="accessRow">
+            <th scope="row"> {{forloop.counter}} </th>
+            <td>{{paymentMethod.value}}</td>
+            <td class="tableBtn"><a href="{% url 'editPaymentMethod' paymentMethod.id %}" class="btn btn-outline-primary">Edit</a></td>
+            <td class="tableBtn"><a href="{% url 'deletePaymentMethod' paymentMethod.id %}" class="btn btn-outline-danger">Delete</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h1 class="text-center">Default Payment Methods</h1>
+<table class="table table-hover mt-4">
+    <thead class="bg-info text-white">
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Payment Method</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for paymentMethod in defaultPaymentMethods.all %}
+        <tr class="accessRow">
+            <th scope="row"> {{forloop.counter}} </th>
+            <td>{{paymentMethod.value}}</td>
+            <td></td>
+            <td></td>
+
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

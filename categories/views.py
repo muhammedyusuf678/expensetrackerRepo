@@ -11,8 +11,9 @@ from datetime import datetime
 @login_required(login_url="/accounts/login")
 def allCategories (request):
     allCategoriesForUser = Category.objects.filter(user=request.user)
-    numOfCategories = allCategoriesForUser.count()
-    return render(request,"categories/allCategories.html",{'categories':allCategoriesForUser})
+    defaultCategories = Category.objects.filter(user=1) #set by admin user
+
+    return render(request,"categories/allCategories.html",{'categories':allCategoriesForUser, 'defaultCategories':defaultCategories })
 
 @login_required(login_url="/accounts/login")
 def addCategory (request):

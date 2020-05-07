@@ -2,9 +2,12 @@ from django.db import models
 
 from django.contrib.auth.models import User
 from categories.models import Category
+from payment_methods.models import PaymentMethod
+
 
 
 DEFAULT_CATEGORY_PK = 5 #other category
+DEFAULT_PAYMENT_METHOD_PK=4 #other payment method
 class Expense (models.Model):
     #primary key -- id provided automatically by django
     title = models.CharField(max_length = 60)
@@ -15,7 +18,9 @@ class Expense (models.Model):
     #non final
     currency = models.CharField(max_length=3, default = 'USD')
     category = models.ForeignKey(Category, default = DEFAULT_CATEGORY_PK , on_delete=models.SET_DEFAULT)
-    payment_method = models.CharField(max_length=30)
+    payment_method = models.ForeignKey(PaymentMethod, default = DEFAULT_PAYMENT_METHOD_PK , on_delete=models.SET_DEFAULT)
+
+    # payment_method = models.CharField(max_length=30)
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
@@ -41,6 +46,10 @@ class Expense (models.Model):
     @property
     def categoryValue (self):
         return self.category.value
+
+    @property
+    def paymentMethodValue (self):
+        return self.payment_method.value
 
 
 
